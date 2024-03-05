@@ -1,5 +1,6 @@
 // TODO #import-html: use ES default imports to import game.html as template
 import { parseUrl } from "./utils";
+import template from "../views/game.html";
 
 var CARD_TEMPLATE = ""
   .concat('<main class="card-cmp">')
@@ -31,6 +32,7 @@ var CARD_TEMPLATE = ""
     this._size = parseInt(params.size) || 9;
     this._flippedCard = null;
     this._matchedPairs = 0;
+    this.template = template;
   }
 
   // TODO #export-functions: remove this line

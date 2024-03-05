@@ -23,6 +23,16 @@ const path = require("path");
         test: /\.(css)$/,
         use: ["style-loader", "css-loader"],
       },
+    {
+      test: /\.(html)$/,
+    use: ["html-loader"],
+  },
+  {
+    test: /\.(png|jpg|gif)$/i,
+    type: 'asset/resource'
+  }
+    
+    
     ],
       
     },
