@@ -10,7 +10,7 @@ import { Component } from "./component";
     constructor(){
       super(template)
     // TODO #extends: call super(template)
-    var params = parseUrl();
+    let params = parseUrl();
     // TODO #import-html: assign template to this.template
     this.name = params.name;
     this.size = parseInt(params.size);
