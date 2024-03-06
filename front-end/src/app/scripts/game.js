@@ -56,9 +56,9 @@ let environment = {
         // create cards out of the config
         this._cards = [];
         // TODO #functional-programming: use Array.map() instead.
-        for (let i in this._config.ids) {
-          this._cards[i] = new CardComponent(this._config.ids[i]);
-        }
+
+          this._cards = this._config.ids.map((id) => new CardComponent(id));
+        
 
         // TODO #functional-programming: use Array.forEach() instead.
         // TODO #let-const: replace var with let.
@@ -66,8 +66,8 @@ let environment = {
           let card = this._cards[i];
         
           // TODO #let-const: extract function _appendCard (ie: copy its body here and remove the function)
+          this._cards.forEach((card) => this._boardElement.appendChild(card.getElement()));
           
-          this._boardElement.appendChild(card.getElement());
 
           card.getElement().addEventListener(
             "click",
