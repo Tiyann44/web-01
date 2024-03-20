@@ -1,15 +1,11 @@
 // TODO #import-html: use ES default imports to import game.html as template
-import { parseUrl } from "./utils";
-import template from "../views/game.html";
-import { Component } from "./component";
+import { parseUrl } from "../../scripts/utils";
+import template from "./game.component.html";
+import { Component } from "../../scripts/component";
 
-let CARD_TEMPLATE = ""
-  .concat('<main class="card-cmp">')
-  .concat('  <div class="card-wrapper">')
-  .concat('    <img class="card front-face" alt="card" />')
-  .concat('    <img class="card back-face" alt="card" />')
-  .concat("  </div>")
-  .concat("</main>");
+import { CardComponent } from "./card/card.component";
+
+import "./game.component.css";
 
 // TODO #export-functions: remove the IIFE
 let environment = {
@@ -45,12 +41,10 @@ let environment = {
 
   // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.init */
-    init(){
+    async init(){
     // fetch the cards configuration from the server
-    this.fetchConfig(
       // TODO #arrow-function: use arrow function instead.
-      (config) => {
-        this._config = config;
+        this._config = await this.fetchConfig();
         this._boardElement = document.querySelector(".cards");
         
         // create cards out of the config
@@ -79,9 +73,7 @@ let environment = {
         }
 
         this.start();
-      },
-    );
-    };
+      }
   // TODO #class: turn function into a method of GameComponent
 
   /* method GameComponent._appendCard */
@@ -113,32 +105,15 @@ let environment = {
   // TODO #class: turn function into a method of GameComponent
   /* method GameComponent.fetchConfig */
 
-    fetchConfig(cb){
-      let xhr =
-      typeof XMLHttpRequest != "undefined"
-        ? new XMLHttpRequest()
-        : new ActiveXObject("Microsoft.XMLHTTP");
+  async fetchConfig() {
+    const response = await fetch(
 
     // TODO #template-literals:  use template literals (backquotes)
-    xhr.open("get", `${environment.api.host}/board?size=${this._size}`, true);
+    `${environment.api.host}/board?size=${this._size}`);
 
     // TODO #arrow-function: use arrow function instead.
-    xhr.onreadystatechange =  () => {
-      let status;
-      let data;
+    return response.json();
       // https://xhr.spec.whatwg.org/#dom-xmlhttprequest-readystate
-      if (xhr.readyState == 4) {
-        // `DONE`
-        status = xhr.status;
-        if (status == 200) {
-          data = JSON.parse(xhr.responseText);
-          cb(data);
-        } else {
-          throw new Error(status);
-        }
-      }
-    };
-    xhr.send();
   }
 
 
@@ -225,67 +200,8 @@ let environment = {
 
   // TODO #card-component: Change images location to /app/components/game/card/assets/***.png
   // TODO #import-assets: use ES default import to import images.
-  let CARDS_IMAGE = [
-    "/src/assets/cards/back.png",
-    "/src/assets/cards/card-0.png",
-    "/src/assets/cards/card-1.png",
-    "/src/assets/cards/card-2.png",
-    "/src/assets/cards/card-3.png",
-    "/src/assets/cards/card-4.png",
-    "/src/assets/cards/card-5.png",
-    "/src/assets/cards/card-6.png",
-    "/src/assets/cards/card-7.png",
-    "/src/assets/cards/card-8.png",
-    "/src/assets/cards/card-9.png",
-  ];
-
   // TODO #class: use the ES6 class keyword
   // TODO #extends: extends Component
   /* class CardComponent constructor */
-  class CardComponent extends Component {
-    constructor(id){
-    // TODO #extends: call super(CARD_TEMPLATE)
-    // is this card flipped?
-    super(template)
-    this._flipped = false;
-    this.template = CARD_TEMPLATE;
-
-    // has the matching card has been discovered already?
-    this.matched = false;
-
-    this._elt = document.createElement("div");
-    this._elt.innerHTML = this.template;
-    this._elt = this._elt.firstElementChild;
-    this._id = id;
-
-    this._imageElt = this.getElement().querySelector(".card-wrapper");
-    this._imageElt.querySelector("img.front-face").src =
-      CARDS_IMAGE[this._id + 1];
-    this._imageElt.querySelector("img.back-face").src = CARDS_IMAGE[0];
-  }
-
-  /* method CardComponent.getElement */
-  getElement() {
-    return this._elt;
-  };
-
-  // TODO #class: turn function into a method of CardComponent
-  /* method CardComponent.flip */
-    flip(){
-    this._imageElt.classList.toggle("flip");
-    this._flipped = !this._flipped;
-  };
-
-  // TODO #class: turn function into a method of CardComponent
-  /* method CardComponent.equals */
-    equals(card){
-    return card._id === this._id;
-    }
-
-  // TODO #class: turn function into a method of CardComponent
-  /* CardComponent.get flipped() */
-    get flipped(){
-        return this._flipped;
-      }
-}
+  
 

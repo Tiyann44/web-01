@@ -1,13 +1,15 @@
 // TODO #import-html: use ES default imports to import welcome.html as template
 // TODO #export-functions: remove the IIFE
-import template from "../views/welcome.html";
-import { Component } from "./component";
+import template from "./welcome.component.html";
+import { Component } from "../../scripts/component";
+import "./welcome.component.css";
   // TODO #export-functions: export function WelcomeComponent
   // TODO #class: use the ES6 class keyword
   /* class WelcomeComponent constructor  */
   export class WelcomeComponent extends Component {
     constructor(){
       super(template);
+      this.template = template;
     }
     // TODO #extends: call super(template)
     // TODO #import-html: assign template to this.template
@@ -24,7 +26,7 @@ import { Component } from "./component";
     form.addEventListener(
       "submit",
       // TODO #arrow-function: use arrow function instead.
-      function (event) {
+      (event) => {
         event.preventDefault();
         if (form.checkValidity() === false) {
           event.stopPropagation();
@@ -35,7 +37,7 @@ import { Component } from "./component";
 
           this._startGame(name, size);
         }
-      }.bind(this),
+      },
       false
     );
 
